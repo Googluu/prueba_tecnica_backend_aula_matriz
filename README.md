@@ -98,4 +98,6 @@ Response:
     "last_name": ""
 }
 
+Frontend con HTML+JS
+RUTA login-page/
 ```
