@@ -38,7 +38,7 @@ Proyecto basico de backend con Django + Django REST Framework que implementa:
 
 ### 2. Levanta PostgreSQL con Docker
 Configura la base de datos en settings.py
-```
+```bash
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -50,28 +50,29 @@ DATABASES = {
     }
 }
 ```
-
+```bash
 docker run --name pg-auth-api \
   -e POSTGRES_USER=sneyder \
   -e POSTGRES_PASSWORD=Admin123 \
   -e POSTGRES_DB=loginapi \
   -p 5432:5432 \
   -d postgres
+```
 
 ### Ejecutar las migraciones y crea al superusuario
-```
+```bash
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 ```
 
 ### Ejecutar el servidor
-```
+```bash
 python manage.py runserver
 ```
 
 ### ejemplos de los endpoints
-```
+```bash
 POST /api/login/
 
 {
