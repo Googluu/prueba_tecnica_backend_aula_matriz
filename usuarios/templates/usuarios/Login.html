@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login API</title>
+</head>
+<body>
+  <h2>Iniciar sesión</h2>
+  <form id="login-form">
+    <input type="text" id="username" placeholder="Usuario" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button type="submit">Entrar</button>
+  </form>
+
+  <div id="mensaje" style="margin-top: 20px;"></div>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const mensaje = document.getElementById('mensaje');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const res = await fetch('/api/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (!res.ok) {
+        mensaje.innerText = 'Login fallido';
+        return;
+      }
+
+      const data = await res.json();
+      localStorage.setItem('access', data.access);
+
+      // Ahora llamamos al perfil
+      const perfilRes = await fetch('/api/perfil/', {
+        headers: {
+          'Authorization': 'Bearer ' + data.access
+        }
+      });
+
+      if (!perfilRes.ok) {
+        mensaje.innerText = 'Error obteniendo el perfil';
+        return;
+      }
+
+      const perfil = await perfilRes.json();
+      mensaje.innerText = `¡Bienvenido ${perfil.username}!`;
+    });
+  </script>
+</body>
+</html>
